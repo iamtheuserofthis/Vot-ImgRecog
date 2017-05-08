@@ -4,11 +4,11 @@
 public class MainClass {
     public static void main(String[] args){
         
-        FirstFrame ff = new FirstFrame();
-        ff.setLocationRelativeTo(null);
+        LoginForm lf = new LoginForm();
+        lf.setLocationRelativeTo(null);
        
-        ff.setResizable(true);
-        ff.setVisible(true);
+        lf.setResizable(false);
+        lf.setVisible(true);
     }
     
 }

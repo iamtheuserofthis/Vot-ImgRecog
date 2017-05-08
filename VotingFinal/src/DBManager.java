@@ -107,4 +107,30 @@ public class DBManager {
         }
         return resu;
     }
+    
+    public static boolean loginUsers(String username,String pass,int voterid,int head){
+        boolean status = false;
+        try(Connection con = DriverManager.getConnection(ADDR,USERNAME,PASSWORD)){
+            String query ="select * from users where Username=? and VoterID=? and Pass=password(?) and Pichead=?;";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setString(1,username);
+            ps.setInt(2,voterid);
+            ps.setString(3,pass);
+            ps.setInt(4, head);
+            
+          ResultSet rs=ps.executeQuery();
+          if(rs.next()){
+              status = true;
+          }
+          else{
+              JOptionPane.showMessageDialog(null, "Login not Successful");
+          }
+          
+            
+        }catch(Exception exp){
+            JOptionPane.showMessageDialog(null,exp);
+        }
+        
+        return status;
+    }
 }
