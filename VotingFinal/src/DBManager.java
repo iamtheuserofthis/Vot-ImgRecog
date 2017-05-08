@@ -108,6 +108,25 @@ public class DBManager {
         return resu;
     }
     
+    public static String getRole(int voterid){
+        String rolename = null;
+        try(Connection con = DriverManager.getConnection(ADDR,USERNAME,PASSWORD);){
+            String query = "select RoleName from users where VoterID=?";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, voterid);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                rolename=rs.getString(1);
+            }
+            
+        }catch(Exception exp){
+            JOptionPane.showMessageDialog(null, exp);
+        }
+        
+        
+        return rolename;
+    }
+    
     public static boolean loginUsers(String username,String pass,int voterid,int head){
         boolean status = false;
         try(Connection con = DriverManager.getConnection(ADDR,USERNAME,PASSWORD)){

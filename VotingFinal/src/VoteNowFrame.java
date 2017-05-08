@@ -10,11 +10,19 @@ import javax.swing.Timer;
 
 public class VoteNowFrame extends javax.swing.JInternalFrame implements ActionListener{
 
+    String roleName;
+    int voterid;
+   
+    
     Date d = new Date();
     SimpleDateFormat  votdate,vottime;
     Timer tr;
     public VoteNowFrame() {
         initComponents();
+         roleName = System.getProperty("RoleName");
+         voterid = Integer.parseInt(System.getProperty("VoterID"));
+         
+          fillForm();
          tr = new Timer(1000, this);
           tr.start();
     }
@@ -34,7 +42,6 @@ public class VoteNowFrame extends javax.swing.JInternalFrame implements ActionLi
         jButton1 = new javax.swing.JButton();
         btnVote = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         txtDob = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -72,6 +79,11 @@ public class VoteNowFrame extends javax.swing.JInternalFrame implements ActionLi
 
         jButton1.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
         jButton1.setText("CLEAR");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         btnVote.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
         btnVote.setText("VOTE");
@@ -83,11 +95,9 @@ public class VoteNowFrame extends javax.swing.JInternalFrame implements ActionLi
 
         jButton3.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
         jButton3.setText("CANCEL");
-
-        jButton4.setText("Temp Check");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                jButton3ActionPerformed(evt);
             }
         });
 
@@ -102,6 +112,7 @@ public class VoteNowFrame extends javax.swing.JInternalFrame implements ActionLi
         jLabel4.setFont(new java.awt.Font("Serif", 0, 16)); // NOI18N
         jLabel4.setText("VOTER ID:");
 
+        txtVoter.setEditable(false);
         txtVoter.setFont(new java.awt.Font("Serif", 0, 16)); // NOI18N
 
         txtName.setEditable(false);
@@ -180,13 +191,11 @@ public class VoteNowFrame extends javax.swing.JInternalFrame implements ActionLi
                         .addComponent(jLabel5)
                         .addGap(18, 18, 18)
                         .addComponent(cbSelectParty, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
                 .addComponent(imgLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33))
             .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(jButton4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(141, 141, 141)
                 .addComponent(jButton1)
                 .addGap(32, 32, 32)
                 .addComponent(btnVote)
@@ -208,7 +217,7 @@ public class VoteNowFrame extends javax.swing.JInternalFrame implements ActionLi
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(270, Short.MAX_VALUE)
+                .addContainerGap(274, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -227,8 +236,7 @@ public class VoteNowFrame extends javax.swing.JInternalFrame implements ActionLi
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(btnVote)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(jButton3))
                 .addGap(26, 26, 26))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -302,21 +310,33 @@ public class VoteNowFrame extends javax.swing.JInternalFrame implements ActionLi
         }
     }//GEN-LAST:event_btnVoteActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+       dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
-        Voter v = null;
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        txtName.setText(null);
+        txtGender.setText(null);
+        txtDob.setText(null);
+        txtVoter.setText(null);
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void fillForm(){
+         Voter v = null;
         try {
-            v = DBManager.getDetails(Integer.parseInt(txtVoter.getText()));//Improve Later to automatically get it
+            v = DBManager.getDetails(voterid);//Improve Later to automatically get it
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Invalid VoterID");
         }
+        txtVoter.setText(""+voterid);
         txtName.setText(v.getName());
         txtGender.setText(v.getGender());
         txtDob.setText(""+v.getDob());
         DBManager.seeEligibility(Integer.parseInt(txtVoter.getText()));
-
-    }//GEN-LAST:event_jButton4ActionPerformed
-
+        String val = DBManager.getRole(Integer.parseInt(txtVoter.getText()));
+        JOptionPane.showMessageDialog(this,val);
+    }
       private void formWindowOpened(java.awt.event.WindowEvent evt) {                                  
      showDateTime();
     }  
@@ -336,7 +356,6 @@ public class VoteNowFrame extends javax.swing.JInternalFrame implements ActionLi
     private javax.swing.JLabel imgLabel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

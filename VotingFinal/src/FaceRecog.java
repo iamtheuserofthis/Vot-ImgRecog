@@ -115,7 +115,7 @@ public class FaceRecog {
         int total = faces.total();
         System.out.println("Total faces detected = " + total);
         if(total==0||total>1){
-            JOptionPane.showMessageDialog(null, "Inappropriate no of people");
+            System.out.print("Someome Else");
             
             count =0;
            
@@ -136,7 +136,7 @@ public class FaceRecog {
         cvCvtColor(origin, binimg, CV_BGR2GRAY);
         cvResize(binimg, resizedImage);
         cvEqualizeHist(resizedImage, resizedImage);
-        //opencv_highgui.cvSaveImage("E:\\Computer Vision\\Astray Images\\temp2.png", resizedImage);//put your self-defined address here
+        opencv_highgui.cvSaveImage("E:\\Computer Vision\\Astray Images\\temp2.png", resizedImage);//put your self-defined address here
 
         cvResetImageROI(origin);
       try{ opencv_core.cvRectangle(origin, cvPoint(cvr.x() * SCALE, cvr.y() * SCALE), cvPoint((cvr.x() + cvr.width()) * SCALE, (cvr.y() + cvr.height()) * SCALE), opencv_core.CvScalar.YELLOW, 6, CV_AA, 0);}

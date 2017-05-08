@@ -169,10 +169,14 @@ public class LoginForm extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         boolean status= false;
+        int voterid = Integer.parseInt(txtVoter.getText());
+        String rolename=null;
         status = DBManager.loginUsers(txtUsername.getText(),new String(txtPass.getPassword()),Integer.parseInt(txtVoter.getText()),Integer.parseInt(txtRecog.getText()));
        
        if(status){
-            System.out.print("Acess Granted");
+            rolename = DBManager.getRole(voterid);
+            System.setProperty("RoleName", rolename);
+            System.setProperty("VoterID",""+voterid);
             FirstFrame ff = new FirstFrame();
             ff.setLocationRelativeTo(null);
             ff.setResizable(true);
